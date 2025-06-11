@@ -7,6 +7,7 @@ You will customize and extend a basic Solidity smart contract to:
 - Learn how public variables and functions behave on the blockchain
 -------
 *Base Contract Code* 
+
 Use this as your starting point (already provided in Remix):
 ```
 // SPDX-License-Identifier: MIT
