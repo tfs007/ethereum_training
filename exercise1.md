@@ -43,7 +43,7 @@ contract HelloEthereum {
 
 4. Deploy and Test the updated contract in Remix
 
-   - Use JavaScript VM
+   - Use Remix VM (Prague)
    - Call setGreeting("Your new greeting")
    - Verify that greeting() returns the new message
    - Call getLastUpdater() to verify the address matches the current account
