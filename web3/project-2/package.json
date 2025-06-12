@@ -1,0 +1,24 @@
+{
+  "name": "project-2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "compile.js",
+  "dependencies": {
+    "command-exists": "^1.2.9",
+    "commander": "^8.3.0",
+    "follow-redirects": "^1.15.9",
+    "js-sha3": "^0.8.0",
+    "memorystream": "^0.3.1",
+    "os-tmpdir": "^1.0.2",
+    "semver": "^5.7.2",
+    "solc": "^0.8.30",
+    "tmp": "^0.0.33"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
