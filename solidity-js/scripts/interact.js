@@ -69,14 +69,36 @@ async function interact() {
         console.log(`>>>Current stored value: ${storedValue}`);
 
         // Listen for events (demo event handling)
+        console.log('Setting up event listener...');
+        const eventSubscription = contract.events.ValueChanged({
+            fromBlock: 'latest'
+        });
+
+        eventSubscription.on('data', (event) => {
+            console.log('\n ValueChanged event recieved:');
+            console.log(`   New Value: ${event.returnValues.newValue}`);
+            console.log(`   Changed By: ${event.returnValues.changedBy}`);
+            console.log(`   Block number: ${event.blockNumber}`);
+        });
 
         // Trigger one more change to demo event 
+        console.log('\n Setting value....>>>...');
+        await contract.methods.set(100).send({
+            from: userAccount,
+            gas: 1000000
+        });
 
         // Wait a moment for the event to be processed 
+        setTimeout(() => {
+            console.log("Interaction DONE");
+            process.exit(0);
+        }, 5000);
 
         
         
     } catch (error) {
+        console.log('[X] Interaction FAILED', error.message);
+        process.exit(1);
         
     }
     
