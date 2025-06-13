@@ -7,7 +7,7 @@ async function deploy() {
         console.log('[=>] Starting deployment...');
 
         // Connect to network (local Ganache network)
-        const web3 = new Web3('http://localhost:7545');
+        const web3 = new Web3('http://localhost:8545');
 
         //Check the Connection 
         const isConnected = await web3.eth.net.isListening();
@@ -30,8 +30,20 @@ async function deploy() {
         console.log(`💰Account Balance: ${web3.utils.fromWei(balance, 'ether')} ETH`);
 
         // Load compiled contract 
+        const buildPath = path.resolve(__dirname,'..','build','SimpleStorage.json');
+        const contractData = await fs.readJson(buildPath);
+        // console.log(contractData);
         // Create contract instance 
+        const contract = new web3.eth.Contract(contractData.abi);
+        // console.log(contract);
+
         // Estimate gas deployment 
+        const deployTx = contract.deploy({
+            data: '0x'+contractData.bytecode
+        });
+        // console.log(deployTx);
+        const gasEstimate =await deployTx.estimateGas({ from: deployerAccount});
+        console.log(`[G] Estimated gas: ${gasEstimate}`);
         //Deploy the Contract 
         // Save the deployment info 
 
