@@ -18,7 +18,17 @@ async function deploy() {
         console.log('[#] Connected to Ethereum Network!')
 
         // Get accounts
+        const accounts = await web3.eth.getAccounts();
+        if (accounts.length === 0) {
+            throw new Error('+_+ No accounts available!')
+        }
+
+        const deployerAccount = accounts[0];
+        console.log(`[D] Deploying from account: ${deployerAccount}`);
         //Get account balance 
+        const balance = await web3.eth.getBalance(deployerAccount);
+        console.log(`💰Account Balance: ${web3.utils.fromWei(balance, 'ether')} ETH`);
+
         // Load compiled contract 
         // Create contract instance 
         // Estimate gas deployment 
