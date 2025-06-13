@@ -50,15 +50,29 @@ async function compile() {
 
         // Extract the compiled contract 
         const contract = compiledContract.contracts['SimpleStorage.sol']['SimpleStorage'];
-        console.log(contract);
+        // console.log(contract);
 
         //Create build directory if it doesn't exist 
+        const buildPath = path.resolve(__dirname,'..','build');
+        await fs.ensureDir(buildPath);
 
         // Save the compiled contract 
+        const outputPath = path.resolve(buildPath,'SimpleStorage.json');
+        await fs.writeJSON(outputPath, {
+            abi: contract.abi,
+            bytecode: contract.evm.bytecode.object
+        }, {spaces : 2});
 
         // Publish some helpful messages 
 
+        console.log('[√] Contract compiled successfully!');
+        console.log(`Output saved to : ${outputPath}`);
+
         // return abi and bytecode 
+        return {
+            abi: contract.abi,
+            bytecode: contract.evm.bytecode.object
+        };
 
     } catch (error) {
         console.error('[X] Compilation failed', error.message);
