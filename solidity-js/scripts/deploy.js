@@ -45,7 +45,30 @@ async function deploy() {
         const gasEstimate =await deployTx.estimateGas({ from: deployerAccount});
         console.log(`[G] Estimated gas: ${gasEstimate}`);
         //Deploy the Contract 
+        console.log('[==>] Deploying contract...');
+        const gasLimit = BigInt(gasEstimate) + BigInt(100000);
+        const deployedContract = await deployTx.send({
+            from: deployerAccount,
+            gas: gasLimit.toString(), // convert to string from web3
+            gasPrice: await web3.eth.getGasPrice()
+        });
+        console.log('>>> Contract deployed successfully! ');
+        console.log(`[A] Contract Address: ${deployedContract.options.address}`);
+        console.log(`[T] Transaction hash: ${deployedContract.transactionHash}`);
         // Save the deployment info 
+        const deploymentInfo = {
+            contractAddress: deployedContract.options.address,
+            transactionHash: deployedContract.transactionHash,
+            deployerAccount: deployerAccount,
+            deploymentTime: new Date().toISOString(),
+            abi: contractData.abi
+        };
+
+        const deploymentPath = path.resolve(__dirname, '..','build','deployment.json');
+        await fs.writeJson(deploymentPath, deploymentInfo, { spaces: 2});
+
+        console.log(`[@] Deployment info saved to: ${deploymentPath}`);
+        return deploymentInfo;
 
     } catch (error) {
         console.error('[X] Deployment failed: ', error.message);
