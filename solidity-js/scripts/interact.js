@@ -14,17 +14,41 @@ async function interact() {
         const deploymentPath = path.resolve(__dirname,'..','build','deployment.json');
         const deploymentInfo = await fs.readJSON(deploymentPath);
 
-        console.log(`.__. Interacting with contract at: ${deploymentInfo.contractAddress}`);
+        // console.log(`.__. Interacting with contract at: ${deploymentInfo.contractAddress}`);
 
 
         // Get accounts 
-        const accounts = await
+        const accounts = await web3.eth.getAccounts();
+        const userAccount = accounts[0];
+
+        // console.log("User account: ", userAccount);
 
         //Create contract instance 
+        const contract = new web3.eth.Contract(
+            deploymentInfo.abi, 
+            deploymentInfo.contractAddress
+        );
+
+        // console.log(contract)
 
         // Read initial value 
 
+        console.log('\n Reading initial stored value...');
+
+        let storedValue = await contract.methods.get().call();
+        console.log('Current stored value:', storedValue);
+
         //Set a new value 
+        const newValue = 42;
+        console.log('Setting new value: ', newValue);
+
+        const setTx = await contract.methods.set(newValue).send({
+            from: userAccount,
+            gas: 100000
+        });
+
+        console.log('[√] Value set successfully');
+        console.log(`Transaction hash: ${setTx.transactionHash}`);
 
         //Read the updatd value 
 
