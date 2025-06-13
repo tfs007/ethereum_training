@@ -51,10 +51,22 @@ async function interact() {
         console.log(`Transaction hash: ${setTx.transactionHash}`);
 
         //Read the updatd value 
+        console.log('Reading updated stored value...');
+        storedValue = await contract.methods.get().call();
+        console.log(`Current stored value: ${storedValue}`);
 
         // Test the increment function 
+        console.log('\n Incrementing value...');
+        const incrementTx = await contract.methods.increment().send({
+            from: userAccount,
+            gas: 100000
+        });
+        console.log('Value incremented');
+        console.log('Transaction hash: ', incrementTx.transactionHash);
 
         // Read the final value 
+        storedValue = await contract.methods.get().call();
+        console.log(`>>>Current stored value: ${storedValue}`);
 
         // Listen for events (demo event handling)
 
